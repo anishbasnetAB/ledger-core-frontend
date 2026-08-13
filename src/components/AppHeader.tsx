@@ -1,12 +1,15 @@
 import { StatusBadge } from "./StatusBadge";
 import type { HealthStatus } from "../hooks/useLedgerHealth";
 import type { CurrentAccountInfo } from "../hooks/useCurrentAccount";
+import type { Session } from "../api/session";
 
 interface AppHeaderProps {
   status: HealthStatus;
   lastCheckedAt: string | null;
   onRefreshHealth: () => void;
   account: CurrentAccountInfo | null;
+  session: Session | null;
+  onLogout: () => void;
 }
 
 /**
@@ -19,6 +22,8 @@ export function AppHeader({
   lastCheckedAt,
   onRefreshHealth,
   account,
+  session,
+  onLogout,
 }: AppHeaderProps) {
   return (
     <header className="border-b border-slate-200 bg-white">
@@ -50,6 +55,23 @@ export function AppHeader({
 
           {/* Live indicators */}
           <div className="flex flex-wrap items-center gap-3">
+            {session && (
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600">
+                {session.email}
+                {session.role === "ADMIN" && (
+                  <span className="rounded-full bg-brand-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-brand-800">
+                    Admin
+                  </span>
+                )}
+                <button
+                  type="button"
+                  onClick={onLogout}
+                  className="ml-1 font-medium text-slate-400 underline-offset-2 hover:text-red-600 hover:underline"
+                >
+                  Sign out
+                </button>
+              </span>
+            )}
             {account ? (
               <span className="inline-flex items-center gap-2 rounded-full border border-brand-100 bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
                 <span className="h-2 w-2 rounded-full bg-brand-500" />

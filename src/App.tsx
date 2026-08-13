@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { AuthProvider, useAuth } from "./hooks/useAuth";
 import {
   CurrentAccountProvider,
   useCurrentAccount,
@@ -8,6 +9,7 @@ import { ToastProvider } from "./components/Toast";
 import { useLedgerHealth } from "./hooks/useLedgerHealth";
 import { AppHeader } from "./components/AppHeader";
 import { Card } from "./components/Card";
+import { AuthScreen } from "./features/auth/AuthScreen";
 
 import { AccountCreate } from "./features/account/AccountCreate";
 import { AccountSelector } from "./features/account/AccountSelector";
@@ -17,36 +19,61 @@ import { WithdrawForm } from "./features/movement/WithdrawForm";
 import { TransferForm } from "./features/movement/TransferForm";
 import { TransferLookup } from "./features/transfers/TransferLookup";
 import { ReconciliationPanel } from "./features/reconciliation/ReconciliationPanel";
-import { FutureAuthPanel } from "./features/auth/FutureAuthPanel";
 
-/** Tabs are data-driven so adding a future page is a one-line change. */
-const TABS = [
+/** Tabs every signed-in user gets. Reconciliation is appended only for ADMIN. */
+const BASE_TABS = [
   { id: "account", label: "Account" },
   { id: "dashboard", label: "Dashboard" },
   { id: "movement", label: "Money Movement" },
   { id: "lookup", label: "Transfer Lookup" },
-  { id: "reconciliation", label: "Reconciliation" },
-  { id: "auth", label: "Future Auth" },
 ] as const;
 
-type TabId = (typeof TABS)[number]["id"];
+const ADMIN_TAB = { id: "reconciliation", label: "Reconciliation" } as const;
+
+type TabId = (typeof BASE_TABS)[number]["id"] | typeof ADMIN_TAB.id;
 
 export default function App() {
   return (
     <ToastProvider>
-      <CurrentAccountProvider>
-        <BalanceProvider>
-          <Shell />
-        </BalanceProvider>
-      </CurrentAccountProvider>
+      <AuthProvider>
+        <CurrentAccountProvider>
+          <BalanceProvider>
+            <Gate />
+          </BalanceProvider>
+        </CurrentAccountProvider>
+      </AuthProvider>
     </ToastProvider>
   );
 }
 
+/** Every endpoint but health/register/login needs a token — gate the whole app on it. */
+function Gate() {
+  const { session, expired } = useAuth();
+  if (!session) {
+    return (
+      <AuthScreen
+        notice={expired ? "Your session expired. Please sign in again." : null}
+      />
+    );
+  }
+  return <Shell />;
+}
+
 function Shell() {
   const { status, lastCheckedAt, refresh } = useLedgerHealth();
-  const { account } = useCurrentAccount();
+  const { account, clearAccount } = useCurrentAccount();
+  const { session, logout } = useAuth();
+  const isAdmin = session?.role === "ADMIN";
+  const tabs = useMemo(
+    () => (isAdmin ? [...BASE_TABS, ADMIN_TAB] : BASE_TABS),
+    [isAdmin],
+  );
   const [tab, setTab] = useState<TabId>("account");
+
+  function handleLogout() {
+    logout();
+    clearAccount();
+  }
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -55,13 +82,15 @@ function Shell() {
         lastCheckedAt={lastCheckedAt}
         onRefreshHealth={refresh}
         account={account}
+        session={session}
+        onLogout={handleLogout}
       />
 
       {/* Tab navigation */}
       <nav className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="flex gap-1 overflow-x-auto" role="tablist">
-            {TABS.map((t) => {
+            {tabs.map((t) => {
               const active = t.id === tab;
               return (
                 <button
@@ -91,8 +120,7 @@ function Shell() {
         {tab === "dashboard" && <DashboardTab />}
         {tab === "movement" && <MovementTab />}
         {tab === "lookup" && <LookupTab />}
-        {tab === "reconciliation" && <ReconciliationTab />}
-        {tab === "auth" && <AuthTab />}
+        {tab === "reconciliation" && isAdmin && <ReconciliationTab />}
       </main>
 
       <footer className="mx-auto max-w-6xl px-4 pb-10 pt-2 text-center text-xs text-slate-400 sm:px-6 lg:px-8">
@@ -110,7 +138,7 @@ function AccountTab() {
     <div className="grid gap-6 lg:grid-cols-2">
       <Card
         title="Create an account"
-        description="Provision a new account to act as. There is no sign-up — this just creates an account record."
+        description="Open a new account. It's yours — scoped to your signed-in user."
       >
         <AccountCreate />
       </Card>
@@ -178,15 +206,5 @@ function ReconciliationTab() {
     >
       <ReconciliationPanel />
     </Card>
-  );
-}
-
-function AuthTab() {
-  return (
-    <div className="mx-auto max-w-xl">
-      <Card title="Authentication" description="Planned for a future release.">
-        <FutureAuthPanel />
-      </Card>
-    </div>
   );
 }

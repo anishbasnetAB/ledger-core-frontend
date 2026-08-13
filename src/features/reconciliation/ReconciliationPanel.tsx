@@ -4,19 +4,25 @@ import { useToast } from "../../components/Toast";
 import { LoadingButton } from "../../components/LoadingButton";
 import { ErrorMessage } from "../../components/ErrorMessage";
 import { toFriendlyMessage } from "../../utils/errors";
+import { formatMoneyDisplay } from "../../utils/money";
 import type { ReconciliationBreak } from "../../types/ledger";
+
+/** Money-valued columns get formatted through formatMoneyDisplay instead of raw String(). */
+const MONEY_COLUMNS = new Set(["ledgerDerivedBalance", "storedBalance"]);
 
 /**
  * Columns we render with friendly labels. The table also renders any extra
  * fields the API returns, so it adapts if the backend shape changes.
  */
 const COLUMNS: { key: string; label: string }[] = [
+  { key: "id", label: "Break ID" },
   { key: "accountId", label: "Account ID" },
-  { key: "ledgerBalance", label: "Ledger balance" },
+  { key: "ledgerDerivedBalance", label: "Ledger balance" },
   { key: "storedBalance", label: "Stored balance" },
   { key: "status", label: "Status" },
-  { key: "createdAt", label: "Created" },
-  { key: "updatedAt", label: "Updated" },
+  { key: "detectedAt", label: "Detected" },
+  { key: "lastDetectedAt", label: "Last detected" },
+  { key: "resolvedAt", label: "Resolved" },
 ];
 
 /** Admin tools: trigger a reconciliation sweep and view detected breaks. */
@@ -89,11 +95,11 @@ export function ReconciliationPanel() {
           Run a sweep or refresh to load reconciliation breaks.
         </div>
       ) : breaks.length === 0 ? (
-        <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-6 py-8 text-center">
-          <p className="text-sm font-semibold text-emerald-700">
+        <div className="rounded-xl border border-brand-200 bg-brand-50 px-6 py-8 text-center">
+          <p className="text-sm font-semibold text-brand-800">
             No reconciliation breaks found.
           </p>
-          <p className="mt-1 text-xs text-emerald-600">
+          <p className="mt-1 text-xs text-brand-700">
             Ledger-derived balances match stored balances.
           </p>
         </div>
@@ -120,7 +126,21 @@ export function ReconciliationPanel() {
                       key={c.key}
                       className="whitespace-nowrap px-4 py-2.5 font-mono text-xs text-slate-700"
                     >
-                      {formatCell(row[c.key])}
+                      {c.key === "status" ? (
+                        <span
+                          className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${
+                            row.status === "OPEN"
+                              ? "bg-red-50 text-red-700"
+                              : "bg-brand-50 text-brand-800"
+                          }`}
+                        >
+                          {formatCell(row.status)}
+                        </span>
+                      ) : MONEY_COLUMNS.has(c.key) ? (
+                        formatMoneyDisplay(row[c.key] as string | number | undefined)
+                      ) : (
+                        formatCell(row[c.key])
+                      )}
                     </td>
                   ))}
                 </tr>

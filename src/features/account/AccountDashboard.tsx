@@ -27,7 +27,7 @@ export function AccountDashboard() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-2xl bg-gradient-to-br from-brand-700 to-brand-900 p-6 text-white shadow-card">
+      <div className="rounded-2xl bg-gradient-to-br from-brand-800 to-brand-950 p-6 text-white shadow-card">
         <div className="flex items-center justify-between">
           <span className="text-xs font-medium uppercase tracking-wider text-brand-200">
             Available balance

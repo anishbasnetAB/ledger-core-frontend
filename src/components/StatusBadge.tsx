@@ -24,9 +24,9 @@ const CONFIG: Record<
   },
   online: {
     label: "Online",
-    dot: "bg-emerald-500",
-    text: "text-emerald-700",
-    bg: "bg-emerald-50",
+    dot: "bg-brand-600",
+    text: "text-brand-800",
+    bg: "bg-brand-50",
   },
   offline: {
     label: "Offline",

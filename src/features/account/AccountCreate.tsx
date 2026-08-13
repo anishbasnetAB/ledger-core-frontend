@@ -4,14 +4,11 @@ import { useCurrentAccount } from "../../hooks/useCurrentAccount";
 import { useToast } from "../../components/Toast";
 import { LoadingButton } from "../../components/LoadingButton";
 import { ErrorMessage } from "../../components/ErrorMessage";
-import { ApiError, fieldErrorFor, toFriendlyMessage } from "../../utils/errors";
+import { fieldErrorFor, toFriendlyMessage } from "../../utils/errors";
 
 const COMMON_CURRENCIES = ["CAD", "USD", "EUR", "GBP"];
 
-/**
- * Create a new account, then auto-select it as the current account.
- * There is no auth — this is just provisioning an account to act as.
- */
+/** Create a new account, then auto-select it as the current account. */
 export function AccountCreate() {
   const { setAccount } = useCurrentAccount();
   const toast = useToast();
@@ -55,16 +52,8 @@ export function AccountCreate() {
 
   const nameError = fieldErrorFor(error, "ownerName");
   const currencyError = fieldErrorFor(error, "currency");
-
-  // The deployed backend currently has no create-account endpoint (404).
-  // Guide the user to the selector instead of showing a bare "Not found".
-  let bannerError: string | null = null;
-  if (error && !nameError && !currencyError) {
-    bannerError =
-      error instanceof ApiError && error.status === 404
-        ? "Account creation isn't available on the backend yet. Use “Select an existing account” to enter an account ID (e.g. 1) and begin."
-        : toFriendlyMessage(error);
-  }
+  const bannerError =
+    error && !nameError && !currencyError ? toFriendlyMessage(error) : null;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -112,7 +101,7 @@ export function AccountCreate() {
       </LoadingButton>
 
       {createdId !== null && (
-        <p className="rounded-lg bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-700">
+        <p className="rounded-lg bg-brand-50 px-3 py-2 text-sm font-medium text-brand-800">
           Created account ID <span className="font-mono">#{createdId}</span> — now
           selected as your current account.
         </p>

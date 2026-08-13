@@ -22,7 +22,7 @@ interface ToastContextValue {
 const ToastContext = createContext<ToastContextValue | null>(null);
 
 const KIND_STYLES: Record<ToastKind, string> = {
-  success: "border-emerald-200 bg-emerald-50 text-emerald-800",
+  success: "border-brand-200 bg-brand-50 text-brand-900",
   error: "border-red-200 bg-red-50 text-red-800",
   info: "border-brand-200 bg-brand-50 text-brand-800",
 };

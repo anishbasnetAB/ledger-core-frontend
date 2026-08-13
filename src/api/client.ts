@@ -1,5 +1,6 @@
 import { ApiError } from "../utils/errors";
 import type { ApiErrorBody } from "../types/ledger";
+import { loadSession, clearSession } from "./session";
 
 /**
  * Base URL resolution:
@@ -26,12 +27,18 @@ export interface RequestOptions {
 
 type Method = "GET" | "POST";
 
+/** Endpoints that work without a token — never attach a stale/expired one. */
+const PUBLIC_PATHS = new Set(["/health", "/auth/login", "/auth/register"]);
+
 /**
  * Core request function. Always talks to `${API_BASE_URL}/api${path}`.
  *
+ * - Attaches `Authorization: Bearer <token>` for every non-public endpoint.
  * - Serializes the body to JSON and sets Content-Type.
  * - Parses JSON responses safely (tolerates empty bodies).
  * - Throws a typed `ApiError` for non-2xx responses and network failures.
+ * - On a 401 from an authenticated endpoint, clears the stored session and
+ *   fires `ledger-core:unauthorized` so the app can drop back to login.
  */
 async function request<T>(
   method: Method,
@@ -39,11 +46,17 @@ async function request<T>(
   options: RequestOptions = {},
 ): Promise<T> {
   const url = `${API_BASE_URL}/api${path}`;
+  const isPublic = PUBLIC_PATHS.has(path);
 
   const headers: Record<string, string> = {
     Accept: "application/json",
     ...options.headers,
   };
+
+  if (!isPublic) {
+    const session = loadSession();
+    if (session) headers.Authorization = `Bearer ${session.token}`;
+  }
 
   let bodyInit: string | undefined;
   if (options.body !== undefined) {
@@ -78,6 +91,10 @@ async function request<T>(
       `Request failed with status ${response.status}`;
     if (isDev) {
       console.error(`[api] ${response.status} ${method} ${url}`, errorBody);
+    }
+    if (response.status === 401 && !isPublic) {
+      clearSession();
+      window.dispatchEvent(new Event("ledger-core:unauthorized"));
     }
     throw new ApiError(
       message,

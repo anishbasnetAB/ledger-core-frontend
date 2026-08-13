@@ -205,7 +205,7 @@ export function TransferForm() {
       )}
 
       {result && (
-        <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+        <div className="rounded-lg border border-brand-200 bg-brand-50 px-4 py-3 text-sm text-brand-900">
           <p className="font-semibold">Transfer complete</p>
           <p className="mt-1 font-mono text-xs">
             ID #{String(result.transferId ?? result.id ?? "—")} ·{" "}

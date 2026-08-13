@@ -4,29 +4,21 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Deep blue / teal banking palette. Easy to retheme later.
+        // Brand green ramp, built from the project palette (004B23 -> CCFF33).
+        // 50/100/200 are computed tints toward white for light backgrounds —
+        // the source palette has no pastel end of its own.
         brand: {
-          50: "#eff6ff",
-          100: "#dbeafe",
-          200: "#bfdbfe",
-          300: "#93c5fd",
-          400: "#60a5fa",
-          500: "#3b82f6",
-          600: "#2563eb",
-          700: "#1d4ed8",
-          800: "#1e40af",
-          900: "#1e3a8a",
-          950: "#172554",
-        },
-        accent: {
-          50: "#f0fdfa",
-          100: "#ccfbf1",
-          200: "#99f6e4",
-          300: "#5eead4",
-          400: "#2dd4bf",
-          500: "#14b8a6",
-          600: "#0d9488",
-          700: "#0f766e",
+          50: "#f9ffe7",
+          100: "#f0ffc2",
+          200: "#e1ff89",
+          300: "#ccff33",
+          400: "#9ef01a",
+          500: "#70e000",
+          600: "#38b000",
+          700: "#008000",
+          800: "#007200",
+          900: "#006400",
+          950: "#004b23",
         },
       },
       fontFamily: {

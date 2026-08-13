@@ -9,13 +9,27 @@
 /** A 3-letter currency code, e.g. "CAD", "USD". */
 export type CurrencyCode = string;
 
+export type Role = "USER" | "ADMIN";
+
+/** Request body for POST /api/auth/register and /api/auth/login. */
+export interface AuthRequest {
+  email: string;
+  password: string;
+}
+
+/** Response from register/login — the session to store client-side. */
+export interface AuthResponse {
+  token: string;
+  email: string;
+  role: Role;
+}
+
 /** Response shape from POST /api/accounts. */
 export interface Account {
   id: number;
   ownerName: string;
   currency: CurrencyCode;
-  /** Some backends include the opening balance; treated as optional. */
-  balance?: string;
+  balance?: string | number;
   createdAt?: string;
 }
 
@@ -68,12 +82,14 @@ export interface Transfer {
 
 /** A single reconciliation break row. Extra fields are preserved. */
 export interface ReconciliationBreak {
+  id?: number;
   accountId?: number;
-  ledgerBalance?: string;
-  storedBalance?: string;
-  status?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  ledgerDerivedBalance?: string | number;
+  storedBalance?: string | number;
+  status?: "OPEN" | "RESOLVED" | string;
+  detectedAt?: string;
+  lastDetectedAt?: string;
+  resolvedAt?: string | null;
   [key: string]: unknown;
 }
 

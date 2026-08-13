@@ -1,6 +1,8 @@
 import { apiClient } from "./client";
 import type {
   Account,
+  AuthRequest,
+  AuthResponse,
   BalanceResponse,
   CreateAccountRequest,
   CreateTransferRequest,
@@ -17,6 +19,16 @@ export const ledgerApi = {
   /** GET /api/health — liveness probe (used for the cold-start status badge). */
   health(signal?: AbortSignal): Promise<unknown> {
     return apiClient.get<unknown>("/health", { signal });
+  },
+
+  /** POST /api/auth/register — create an account and receive a token immediately. */
+  register(body: AuthRequest): Promise<AuthResponse> {
+    return apiClient.post<AuthResponse>("/auth/register", body);
+  },
+
+  /** POST /api/auth/login — exchange credentials for a token. */
+  login(body: AuthRequest): Promise<AuthResponse> {
+    return apiClient.post<AuthResponse>("/auth/login", body);
   },
 
   /** POST /api/accounts — create a new account. */
