@@ -59,15 +59,10 @@ export function AuthScreen({ notice }: { notice?: string | null }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12">
       <div className="w-full max-w-sm">
-        {status !== "online" && (
-          <div className="mb-4 flex flex-col items-center gap-2 text-center">
-            <StatusBadge status={status} />
-            <p className="rounded-lg bg-amber-50 px-3 py-2 text-xs font-medium text-amber-700">
-              Hosted on free tier, so the server may take up to a minute to
-              wake up. Please be patient.
-            </p>
-          </div>
-        )}
+        <div className="mb-4 flex items-center justify-center gap-2 text-center text-xs font-medium text-slate-500">
+          <span>First spin-up may take a moment, please be patient.</span>
+          <StatusBadge status={status} />
+        </div>
 
         <div className="mb-8 flex flex-col items-center gap-3 text-center">
           <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-700 text-white shadow-sm">
@@ -88,13 +83,7 @@ export function AuthScreen({ notice }: { notice?: string | null }) {
             <h1 className="text-xl font-bold tracking-tight text-slate-900">
               Ledger-Core
             </h1>
-            <p className="text-sm leading-relaxed text-slate-500">
-              A backend money-movement service built with Spring Boot and
-              PostgreSQL. Demonstrates banking-style correctness guarantees:
-              atomic transactions, double-entry bookkeeping, idempotent
-              transfers, concurrency-safe account updates, append-only ledger
-              history, and automated balance reconciliation.
-            </p>
+            <p className="text-sm text-slate-500">Money-movement console</p>
           </div>
         </div>
 

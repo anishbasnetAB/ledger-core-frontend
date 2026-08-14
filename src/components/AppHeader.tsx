@@ -99,15 +99,17 @@ export function AppHeader({
         <div className="about mt-6 max-w-3xl space-y-3">
           <p className="text-sm leading-relaxed text-slate-600">
             <span className="font-semibold text-slate-800">Ledger-Core</span> is
-            a backend money-movement service built with Spring Boot and
-            PostgreSQL. It demonstrates banking-style correctness guarantees such
-            as atomic transactions, double-entry bookkeeping, idempotent
-            transfers, concurrency-safe account updates, append-only ledger
-            history, and automated balance reconciliation.
+            a production-style money movement platform built with Java, Spring
+            Boot, and PostgreSQL, focused on transaction safety, data
+            integrity, and reliable financial operations.
           </p>
           <p className="text-sm leading-relaxed text-slate-500">
-            This is a learning and portfolio project focused on correctness under
-            failure, not just CRUD.
+            It supports secure account management and transfers with JWT
+            authentication, ACID transactions, optimistic locking,
+            idempotency, double-entry bookkeeping, and an immutable ledger.
+            The system also includes automated reconciliation, Redis caching
+            and rate limiting, and Kafka-based event processing with
+            idempotent consumers.
           </p>
           {/* Add more project explanation paragraphs here as the project grows. */}
 

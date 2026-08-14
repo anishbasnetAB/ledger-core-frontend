@@ -27,6 +27,7 @@ const CONFIG: Record<
     dot: "bg-brand-600",
     text: "text-brand-800",
     bg: "bg-brand-50",
+    pulse: true,
   },
   offline: {
     label: "Offline",
