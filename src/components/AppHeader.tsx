@@ -31,7 +31,7 @@ export function AppHeader({
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           {/* Brand */}
           <div className="flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-600 text-white shadow-sm">
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-700 text-white shadow-sm">
               <svg
                 className="h-6 w-6"
                 viewBox="0 0 24 24"

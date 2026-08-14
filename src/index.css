@@ -19,6 +19,11 @@
 
   body {
     @apply bg-slate-50 text-slate-800 font-sans;
+    scrollbar-width: none; /* Firefox */
+  }
+
+  body::-webkit-scrollbar {
+    display: none; /* Chrome/Safari/Edge */
   }
 
   /* Visible, consistent focus ring for keyboard users. */
