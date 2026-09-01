@@ -8,7 +8,7 @@ export function WithdrawForm() {
       kind="withdraw"
       action={(id, amount) => ledgerApi.withdraw(id, amount)}
       submitLabel="Withdraw"
-      helperText="Insufficient funds are reported clearly by the backend (422)."
+      helperText=""
     />
   );
 }

@@ -5,7 +5,7 @@ import { useLedgerHealth } from "../../hooks/useLedgerHealth";
 import { LoadingButton } from "../../components/LoadingButton";
 import { ErrorMessage } from "../../components/ErrorMessage";
 import { StatusBadge } from "../../components/StatusBadge";
-import { fieldErrorFor, toFriendlyMessage } from "../../utils/errors";
+import { ApiError, fieldErrorFor, toFriendlyMessage } from "../../utils/errors";
 
 type Mode = "login" | "register";
 
@@ -45,7 +45,11 @@ export function AuthScreen({ notice }: { notice?: string | null }) {
       const session = await call({ email: email.trim(), password });
       setSession(session);
     } catch (err) {
-      setError(err);
+      if (mode === "register" && err instanceof ApiError && err.status === 409) {
+        setError(new Error("Check your email to complete signup."));
+      } else {
+        setError(err);
+      }
     } finally {
       setSubmitting(false);
     }
