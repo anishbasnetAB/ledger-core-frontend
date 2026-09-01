@@ -60,7 +60,6 @@ export function AuthScreen({ notice }: { notice?: string | null }) {
     <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12">
       <div className="w-full max-w-sm">
         <div className="mb-4 flex items-center justify-center gap-2 text-center text-xs font-medium text-slate-500">
-          <span>First spin-up may take a moment, please be patient.</span>
           <StatusBadge status={status} />
         </div>
 
