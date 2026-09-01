@@ -89,7 +89,7 @@ function Shell() {
       {/* Tab navigation */}
       <nav className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="flex gap-1 overflow-x-auto" role="tablist">
+          <div className="scrollbar-hidden flex gap-1 overflow-x-auto" role="tablist">
             {tabs.map((t) => {
               const active = t.id === tab;
               return (

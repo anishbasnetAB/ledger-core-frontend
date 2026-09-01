@@ -6,7 +6,7 @@ import { LoadingButton } from "../../components/LoadingButton";
 import { ErrorMessage } from "../../components/ErrorMessage";
 import { fieldErrorFor, toFriendlyMessage } from "../../utils/errors";
 
-const COMMON_CURRENCIES = ["CAD", "USD", "EUR", "GBP"];
+const DEMO_CURRENCY = "CAD";
 
 /** Create a new account, then auto-select it as the current account. */
 export function AccountCreate() {
@@ -14,7 +14,6 @@ export function AccountCreate() {
   const toast = useToast();
 
   const [ownerName, setOwnerName] = useState("");
-  const [currency, setCurrency] = useState("CAD");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<unknown>(null);
   const [createdId, setCreatedId] = useState<number | null>(null);
@@ -33,13 +32,13 @@ export function AccountCreate() {
     try {
       const account = await ledgerApi.createAccount({
         ownerName: ownerName.trim(),
-        currency: currency.trim().toUpperCase(),
+        currency: DEMO_CURRENCY,
       });
       setCreatedId(account.id);
       setAccount({
         id: account.id,
         ownerName: account.ownerName ?? ownerName.trim(),
-        currency: account.currency ?? currency,
+        currency: account.currency ?? DEMO_CURRENCY,
       });
       toast.show(`Account #${account.id} created and selected.`);
       setOwnerName("");
@@ -77,20 +76,15 @@ export function AccountCreate() {
         <label htmlFor="currency" className="label-base">
           Currency
         </label>
-        <select
+        <input
           id="currency"
+          type="text"
           className={`input-base ${currencyError ? "input-error" : ""}`}
-          value={currency}
-          onChange={(e) => setCurrency(e.target.value)}
+          value={DEMO_CURRENCY}
+          readOnly
           disabled={submitting}
-        >
-          {COMMON_CURRENCIES.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
-        <p className="helper-text">3-letter currency code. Defaults to CAD.</p>
+        />
+        <p className="helper-text">CAD only for the demo.</p>
         <ErrorMessage message={currencyError} variant="inline" />
       </div>
 
