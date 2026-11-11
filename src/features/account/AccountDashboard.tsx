@@ -1,6 +1,5 @@
 import { useCurrentAccount } from "../../hooks/useCurrentAccount";
 import { useBalance } from "../../hooks/useBalance";
-import { LoadingButton } from "../../components/LoadingButton";
 import { ErrorMessage } from "../../components/ErrorMessage";
 import { formatMoneyDisplay } from "../../utils/money";
 
@@ -64,7 +63,7 @@ export function AccountDashboard() {
             type="button"
             onClick={() => void refresh()}
             disabled={loading}
-            className="inline-flex items-center gap-1.5 rounded-md bg-white/10 px-2.5 py-1 font-medium text-white transition hover:bg-white/20 disabled:opacity-50"
+            className="inline-flex min-h-9 items-center gap-1.5 rounded-md border border-white/30 bg-white/15 px-3 py-1 font-semibold text-white transition hover:bg-white/25 disabled:opacity-60"
           >
             <svg
               className={`h-3.5 w-3.5 ${loading ? "animate-spin" : ""}`}
@@ -85,14 +84,14 @@ export function AccountDashboard() {
 
       {error && <ErrorMessage message={error} />}
 
-      <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
-        <div className="rounded-lg border border-ui-200 bg-white px-4 py-3">
+      <div className="dashboard-facts text-sm">
+        <div className="dashboard-fact">
           <dt className="text-xs text-ui-500">Account ID</dt>
           <dd className="mt-0.5 font-mono font-semibold text-ui-900">
             #{account.id}
           </dd>
         </div>
-        <div className="rounded-lg border border-ui-200 bg-white px-4 py-3">
+        <div className="dashboard-fact">
           <dt className="text-xs text-ui-500">Currency</dt>
           <dd className="mt-0.5 font-semibold text-ui-900">
             {balance?.currency ?? account.currency ?? "—"}
@@ -100,15 +99,6 @@ export function AccountDashboard() {
         </div>
       </div>
 
-      {/* Hidden control kept for keyboard users / explicit re-fetch. */}
-      <LoadingButton
-        variant="ghost"
-        loading={loading}
-        onClick={() => void refresh()}
-        className="w-full"
-      >
-        Refresh balance
-      </LoadingButton>
     </div>
   );
 }

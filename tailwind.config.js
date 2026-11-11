@@ -16,21 +16,19 @@ export default {
           800: "var(--ink)",
           900: "var(--ink)",
         },
-        // Brand green ramp, built from the project palette (004B23 -> CCFF33).
-        // 50/100/200 are computed tints toward white for light backgrounds —
-        // the source palette has no pastel end of its own.
+        // Saturated forest actions with readable green tints for supporting UI.
         brand: {
-          50: "#f9ffe7",
-          100: "#f0ffc2",
-          200: "#e1ff89",
-          300: "#ccff33",
-          400: "#9ef01a",
-          500: "#70e000",
-          600: "#38b000",
-          700: "#008000",
-          800: "#007200",
-          900: "#006400",
-          950: "#004b23",
+          50: "#effaf3",
+          100: "#dff3e7",
+          200: "#b8e6c9",
+          300: "#84c9a0",
+          400: "#40a977",
+          500: "#138658",
+          600: "#087546",
+          700: "#075d39",
+          800: "#0c4b32",
+          900: "#0c3d2d",
+          950: "#072c21",
         },
       },
       fontFamily: {

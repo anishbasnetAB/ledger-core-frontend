@@ -89,7 +89,7 @@ function Shell() {
       {/* Tab navigation */}
       <nav className="workspace-nav sticky top-0 z-30">
         <div className="workspace-width px-4 sm:px-6 lg:px-8">
-          <div className="scrollbar-hidden flex gap-1 overflow-x-auto py-2" role="tablist">
+          <div className="scrollbar-hidden flex gap-2 overflow-x-auto py-2" role="tablist">
             {tabs.map((t) => {
               const active = t.id === tab;
               return (
@@ -98,7 +98,7 @@ function Shell() {
                   role="tab"
                   aria-selected={active}
                   onClick={() => setTab(t.id)}
-                  className={`workspace-tab relative whitespace-nowrap px-4 py-3 text-sm font-medium transition ${
+                  className={`workspace-tab relative whitespace-nowrap px-4 py-2.5 text-sm transition ${
                     active
                       ? "workspace-tab-active"
                       : "workspace-tab-idle"
@@ -106,7 +106,7 @@ function Shell() {
                 >
                   {t.label}
                   {active && (
-                    <span className="workspace-tab-marker absolute inset-x-2 -bottom-px h-0.5 rounded-full" />
+                    <span className="workspace-tab-marker absolute inset-x-3 bottom-0 h-0.5 rounded-full" />
                   )}
                 </button>
               );
@@ -115,7 +115,7 @@ function Shell() {
         </div>
       </nav>
 
-      <main className="workspace-width px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+      <main className="workspace-width px-4 py-7 sm:px-6 sm:py-8 lg:px-8">
         {tab === "account" && <AccountTab />}
         {tab === "dashboard" && <DashboardTab />}
         {tab === "movement" && <MovementTab />}
@@ -123,7 +123,7 @@ function Shell() {
         {tab === "reconciliation" && isAdmin && <ReconciliationTab />}
       </main>
 
-      <footer className="workspace-footer workspace-width px-4 pb-10 pt-2 text-xs sm:px-6 lg:px-8">
+      <footer className="workspace-footer workspace-width px-4 pb-8 pt-3 text-xs sm:px-6 lg:px-8">
         Ledger-Core console. Learning and portfolio project. Backend may
         cold-start after inactivity.
       </footer>
@@ -175,14 +175,14 @@ function MovementTab() {
           <WithdrawForm />
         </Card>
       </div>
-      <Card
-        title="Transfer"
-        description="Move money to another account with a safe, retryable idempotency key."
-      >
-        <div className="max-w-xl">
+      <div className="max-w-3xl mx-auto">
+        <Card
+          title="Transfer"
+          description="Move money to another account with a safe, retryable idempotency key."
+        >
           <TransferForm />
-        </div>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 }

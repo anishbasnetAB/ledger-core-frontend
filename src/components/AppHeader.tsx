@@ -15,10 +15,10 @@ interface AppHeaderProps {
 export function AppHeader({ status, lastCheckedAt, onRefreshHealth, account, session, onLogout }: AppHeaderProps) {
   return (
     <header className="workspace-header">
-      <div className="workspace-width px-4 py-5 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+      <div className="workspace-width px-4 py-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex min-w-0 items-center gap-4">
-            <span className="brand-mark flex h-11 w-11 shrink-0 items-center justify-center" aria-hidden="true">
+            <span className="brand-mark flex h-12 w-12 shrink-0 items-center justify-center" aria-hidden="true">
               <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 21h18M4 10h16M5 10l7-5 7 5M6 10v8M18 10v8M10 10v8M14 10v8" />
               </svg>
@@ -43,15 +43,17 @@ export function AppHeader({ status, lastCheckedAt, onRefreshHealth, account, ses
             </div>}
           </div>
         </div>
-        <details className="about-details">
-          <summary>About this project</summary>
-          <div className="about-copy">
-            <p><strong>Ledger-Core</strong> is a production-style money movement platform built with Java, Spring Boot, and PostgreSQL, focused on transaction safety, data integrity, and reliable financial operations.</p>
-            <p>It supports secure account management and transfers with JWT authentication, ACID transactions, optimistic locking, idempotency, double-entry bookkeeping, and an immutable ledger. The system also includes automated reconciliation, Redis caching and rate limiting, and Kafka-based event processing with idempotent consumers.</p>
-          </div>
-        </details>
-        {status === "waking" && <p className="service-notice">The backend may be waking up. This can take 30 to 60 seconds after inactivity. Thanks for your patience.</p>}
-        {lastCheckedAt && status === "online" && <p className="health-time">Backend last verified at {new Date(lastCheckedAt).toLocaleTimeString()}.</p>}
+        <div className="header-meta">
+          <details className="about-details">
+            <summary>About this project</summary>
+            <div className="about-copy">
+              <p><strong>Ledger-Core</strong> is a production-style money movement platform built with Java, Spring Boot, and PostgreSQL, focused on transaction safety, data integrity, and reliable financial operations.</p>
+              <p>It supports secure account management and transfers with JWT authentication, ACID transactions, optimistic locking, idempotency, double-entry bookkeeping, and an immutable ledger. The system also includes automated reconciliation, Redis caching and rate limiting, and Kafka-based event processing with idempotent consumers.</p>
+            </div>
+          </details>
+          {status === "waking" && <p className="service-notice">The backend may be waking up. This can take 30 to 60 seconds after inactivity.</p>}
+          {lastCheckedAt && status === "online" && <p className="health-time">Backend verified {new Date(lastCheckedAt).toLocaleTimeString()}.</p>}
+        </div>
       </div>
     </header>
   );

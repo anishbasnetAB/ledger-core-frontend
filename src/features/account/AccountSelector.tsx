@@ -63,7 +63,6 @@ export function AccountSelector() {
             <LoadingButton
               type="submit"
               loading={loading}
-              variant="secondary"
               disabled={!idInput.trim()}
             >
               Select

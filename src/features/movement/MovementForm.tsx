@@ -115,7 +115,7 @@ export function MovementForm({
       <LoadingButton
         type="submit"
         loading={submitting}
-        variant={kind === "withdraw" ? "secondary" : "primary"}
+        variant="primary"
         disabled={disabled || !amount}
         className="w-full"
       >

@@ -72,7 +72,6 @@ export function TransferLookup() {
             <LoadingButton
               type="submit"
               loading={loading}
-              variant="secondary"
               disabled={!idInput.trim()}
             >
               Fetch
@@ -83,11 +82,11 @@ export function TransferLookup() {
       </form>
 
       {transfer && (
-        <dl className="divide-y divide-ui-100 rounded-xl border border-ui-200 bg-white">
+        <dl className="lookup-result divide-y divide-ui-100">
           {KNOWN_FIELDS.filter((f) => transfer[f.key] !== undefined).map((f) => (
             <div
               key={String(f.key)}
-              className="flex items-center justify-between gap-4 px-4 py-2.5"
+              className="flex items-center justify-between gap-4 px-4 py-3"
             >
               <dt className="text-xs font-medium text-ui-500">{f.label}</dt>
               <dd className="font-mono text-sm text-ui-900">
