@@ -31,7 +31,7 @@ export function AppHeader({ status, lastCheckedAt, onRefreshHealth, account, ses
           <div className="header-tools flex flex-wrap items-center gap-2 sm:gap-3">
             <div className="account-context">
               <span className="context-label">Current account</span>
-              <span className="context-value">{account ? `#${account.id}${account.ownerName ? ` (${account.ownerName})` : ""}` : "None selected"}</span>
+              <span className="context-value">{account ? `#${account.id}${account.ownerName ? ` · ${account.ownerName}` : ""}` : "None selected"}</span>
             </div>
             <button type="button" onClick={onRefreshHealth} title="Re-check backend status" aria-label="Re-check backend status" className="health-action">
               <StatusBadge status={status} />

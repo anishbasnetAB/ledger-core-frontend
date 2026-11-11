@@ -26,7 +26,7 @@ export function Card({
       className={`workspace-panel ${className}`}
     >
       {(title || action) && (
-        <header className="flex items-start justify-between gap-4 panel-header px-5 py-5 sm:px-7 sm:py-6">
+        <header className="flex items-start justify-between gap-4 panel-header px-5 pb-2 pt-5 sm:px-7 sm:pb-2 sm:pt-6">
           <div>
             {title && (
               <h2 className="panel-title">{title}</h2>
@@ -38,7 +38,7 @@ export function Card({
           {action && <div className="shrink-0">{action}</div>}
         </header>
       )}
-      <div className="panel-body px-5 py-6 sm:px-7 sm:py-7">{children}</div>
+      <div className="panel-body px-5 pb-6 pt-4 sm:px-7 sm:pb-7 sm:pt-5">{children}</div>
     </section>
   );
 }

@@ -6,14 +6,14 @@ This interface is a compact workbench for a signed-in user managing ledger accou
 
 - Color tokens live in `src/index.css` under `:root`. Saturated forest green signals primary actions and account context; lime appears only as a small accent on dark surfaces. Warm white and tinted green support the surface hierarchy. Disabled actions use a distinct green tint with readable text. Red is reserved for errors and destructive actions.
 - Body type uses the existing Inter/system stack. Georgia is reserved for product and section headings. Monetary figures use tabular numerals.
-- The content area caps at 1216px. Focused single tasks center at 860px; the transfer form caps at 768px. Panels use a 14px radius, one subtle border, and a soft shadow. Inner data surfaces use smaller radii.
+- The content area caps at 1216px. Focused single tasks center at 860px; the transfer form caps at 768px. Panels use a 14px radius, one subtle outer border, and a soft shadow. Headings and form bodies use spacing instead of dividing rules. Inner data surfaces use smaller radii.
 - Spacing follows a 4px base rhythm, with 24px between related work areas and 32–40px outer page space.
 
 ## Interaction patterns
 
 - Shared form controls have a minimum 44px height, visible labels, inline errors, clear disabled states, and immediate keyboard focus outlines.
 - Primary, secondary, ghost, and danger actions use the shared `LoadingButton` component. Loading keeps the action label visible.
-- Account context, backend health, and user identity sit in the shared header. Verification time and “About this project” share a compact metadata row.
+- Account context, backend health, and user identity sit in the shared header. Verification time and “About this project” share a compact metadata row. Account context uses a quiet tinted surface, status uses a dot, and the header, navigation, and footer rely on spacing and shadow rather than divider lines.
 - The tab strip remains horizontally scrollable on narrow screens; panels collapse to one column below the desktop breakpoint.
 - Animations are limited to short color transitions and existing loading indicators, with reduced-motion support in CSS.
 

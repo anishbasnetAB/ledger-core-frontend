@@ -105,9 +105,6 @@ function Shell() {
                   }`}
                 >
                   {t.label}
-                  {active && (
-                    <span className="workspace-tab-marker absolute inset-x-3 bottom-0 h-0.5 rounded-full" />
-                  )}
                 </button>
               );
             })}
