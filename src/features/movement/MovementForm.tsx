@@ -7,12 +7,13 @@ import { LoadingButton } from "../../components/LoadingButton";
 import { ErrorMessage } from "../../components/ErrorMessage";
 import { normalizeMoney, validateMoney } from "../../utils/money";
 import { ApiError, fieldErrorFor, toFriendlyMessage } from "../../utils/errors";
+import { generateIdempotencyKey } from "../../utils/idempotency";
 
 interface MovementFormProps {
   /** "deposit" or "withdraw". */
   kind: "deposit" | "withdraw";
   /** Calls the matching ledgerApi endpoint. */
-  action: (accountId: number, amount: string) => Promise<unknown>;
+  action: (accountId: number, amount: string, idempotencyKey: string) => Promise<unknown>;
   submitLabel: string;
   helperText: string;
 }
@@ -36,6 +37,8 @@ export function MovementForm({
   const [clientError, setClientError] = useState<string | undefined>();
   const [error, setError] = useState<unknown>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [idempotencyKey, setIdempotencyKey] = useState(generateIdempotencyKey);
+  const [attemptSignature, setAttemptSignature] = useState<string | null>(null);
 
   const disabled = !account;
 
@@ -53,9 +56,17 @@ export function MovementForm({
     }
 
     const normalized = normalizeMoney(amount);
+    const signature = `${account.id}:${normalized}`;
+    const key = attemptSignature === signature
+      ? idempotencyKey
+      : generateIdempotencyKey();
+    if (attemptSignature !== signature) {
+      setAttemptSignature(signature);
+      setIdempotencyKey(key);
+    }
     setSubmitting(true);
     try {
-      await action(account.id, normalized);
+      await action(account.id, normalized, key);
       await refresh();
       toast.show(
         `${kind === "deposit" ? "Deposited" : "Withdrew"} ${normalized} ${
@@ -63,6 +74,8 @@ export function MovementForm({
         }`.trim() + ".",
       );
       setAmount("");
+      setAttemptSignature(null);
+      setIdempotencyKey(generateIdempotencyKey());
     } catch (err) {
       setError(err);
       // Surface insufficient-funds (422) prominently for withdrawals.
@@ -110,7 +123,7 @@ export function MovementForm({
       </LoadingButton>
 
       {disabled && (
-        <p className="text-center text-xs text-slate-400">
+        <p className="text-center text-xs text-ui-400">
           Select an account first.
         </p>
       )}

@@ -76,7 +76,7 @@ function Shell() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="app-shell min-h-screen">
       <AppHeader
         status={status}
         lastCheckedAt={lastCheckedAt}
@@ -87,9 +87,9 @@ function Shell() {
       />
 
       {/* Tab navigation */}
-      <nav className="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="scrollbar-hidden flex gap-1 overflow-x-auto" role="tablist">
+      <nav className="workspace-nav sticky top-0 z-30">
+        <div className="workspace-width px-4 sm:px-6 lg:px-8">
+          <div className="scrollbar-hidden flex gap-1 overflow-x-auto py-2" role="tablist">
             {tabs.map((t) => {
               const active = t.id === tab;
               return (
@@ -98,15 +98,15 @@ function Shell() {
                   role="tab"
                   aria-selected={active}
                   onClick={() => setTab(t.id)}
-                  className={`relative whitespace-nowrap px-4 py-3 text-sm font-medium transition ${
+                  className={`workspace-tab relative whitespace-nowrap px-4 py-3 text-sm font-medium transition ${
                     active
-                      ? "text-brand-700"
-                      : "text-slate-500 hover:text-slate-800"
+                      ? "workspace-tab-active"
+                      : "workspace-tab-idle"
                   }`}
                 >
                   {t.label}
                   {active && (
-                    <span className="absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-brand-600" />
+                    <span className="workspace-tab-marker absolute inset-x-2 -bottom-px h-0.5 rounded-full" />
                   )}
                 </button>
               );
@@ -115,7 +115,7 @@ function Shell() {
         </div>
       </nav>
 
-      <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+      <main className="workspace-width px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
         {tab === "account" && <AccountTab />}
         {tab === "dashboard" && <DashboardTab />}
         {tab === "movement" && <MovementTab />}
@@ -123,8 +123,8 @@ function Shell() {
         {tab === "reconciliation" && isAdmin && <ReconciliationTab />}
       </main>
 
-      <footer className="mx-auto max-w-6xl px-4 pb-10 pt-2 text-center text-xs text-slate-400 sm:px-6 lg:px-8">
-        Ledger-Core console · Learning &amp; portfolio project · Backend may
+      <footer className="workspace-footer workspace-width px-4 pb-10 pt-2 text-xs sm:px-6 lg:px-8">
+        Ledger-Core console. Learning and portfolio project. Backend may
         cold-start after inactivity.
       </footer>
     </div>
@@ -135,7 +135,7 @@ function Shell() {
 
 function AccountTab() {
   return (
-    <div className="grid gap-6 lg:grid-cols-2">
+    <div className="workspace-grid grid gap-6 lg:grid-cols-2">
       <Card
         title="Create an account"
         description="Open a new account. It's yours — scoped to your signed-in user."
@@ -154,10 +154,12 @@ function AccountTab() {
 
 function DashboardTab() {
   return (
-    <div className="mx-auto max-w-xl">
-      <Card title="Account dashboard" description="Live balance from the backend.">
-        <AccountDashboard />
-      </Card>
+    <div className="workspace-single">
+      <div className="workspace-page-heading">
+        <h2>Account dashboard</h2>
+        <p>Live balance from the backend.</p>
+      </div>
+      <AccountDashboard />
     </div>
   );
 }
@@ -165,7 +167,7 @@ function DashboardTab() {
 function MovementTab() {
   return (
     <div className="space-y-6">
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="workspace-grid grid gap-6 lg:grid-cols-2">
         <Card title="Deposit" description="Add funds to the current account.">
           <DepositForm />
         </Card>
@@ -177,7 +179,7 @@ function MovementTab() {
         title="Transfer"
         description="Move money to another account with a safe, retryable idempotency key."
       >
-        <div className="mx-auto max-w-lg">
+        <div className="max-w-xl">
           <TransferForm />
         </div>
       </Card>
@@ -187,7 +189,7 @@ function MovementTab() {
 
 function LookupTab() {
   return (
-    <div className="mx-auto max-w-xl">
+    <div className="workspace-single">
       <Card
         title="Transfer details lookup"
         description="Fetch a transfer by its ID."

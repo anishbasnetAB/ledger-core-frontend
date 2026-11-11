@@ -77,12 +77,12 @@ export function AccountSelector() {
       </form>
 
       {account && (
-        <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
+        <div className="flex items-center justify-between rounded-lg border border-ui-200 bg-ui-50 px-4 py-3">
           <div className="text-sm">
-            <span className="text-slate-500">Current account: </span>
-            <span className="font-semibold text-slate-900">#{account.id}</span>
+            <span className="text-ui-500">Current account: </span>
+            <span className="font-semibold text-ui-900">#{account.id}</span>
             {account.ownerName && (
-              <span className="text-slate-500"> · {account.ownerName}</span>
+              <span className="text-ui-500"> · {account.ownerName}</span>
             )}
           </div>
           <button
@@ -91,7 +91,7 @@ export function AccountSelector() {
               clearAccount();
               toast.show("Cleared current account.", "info");
             }}
-            className="text-xs font-medium text-slate-500 underline-offset-2 hover:text-red-600 hover:underline"
+            className="text-xs font-medium text-ui-500 underline-offset-2 hover:text-red-600 hover:underline"
           >
             Clear
           </button>

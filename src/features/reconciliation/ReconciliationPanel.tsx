@@ -91,7 +91,7 @@ export function ReconciliationPanel() {
       <ErrorMessage message={error} />
 
       {breaks === null ? (
-        <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-6 py-8 text-center text-sm text-slate-500">
+        <div className="rounded-xl border border-dashed border-ui-300 bg-ui-50 px-6 py-8 text-center text-sm text-ui-500">
           Run a sweep or refresh to load reconciliation breaks.
         </div>
       ) : breaks.length === 0 ? (
@@ -104,27 +104,27 @@ export function ReconciliationPanel() {
           </p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-slate-200">
-          <table className="min-w-full divide-y divide-slate-200 text-sm">
-            <thead className="bg-slate-50">
+        <div className="overflow-x-auto rounded-xl border border-ui-200">
+          <table className="min-w-full divide-y divide-ui-200 text-sm">
+            <thead className="bg-ui-50">
               <tr>
                 {allColumns.map((c) => (
                   <th
                     key={c.key}
-                    className="whitespace-nowrap px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-slate-500"
+                    className="whitespace-nowrap px-4 py-2.5 text-left text-xs font-semibold text-ui-500"
                   >
                     {c.label}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 bg-white">
+            <tbody className="divide-y divide-ui-100 bg-white">
               {breaks.map((row, i) => (
-                <tr key={i} className="hover:bg-slate-50">
+                <tr key={i} className="hover:bg-ui-50">
                   {allColumns.map((c) => (
                     <td
                       key={c.key}
-                      className="whitespace-nowrap px-4 py-2.5 font-mono text-xs text-slate-700"
+                      className="whitespace-nowrap px-4 py-2.5 font-mono text-xs text-ui-700"
                     >
                       {c.key === "status" ? (
                         <span

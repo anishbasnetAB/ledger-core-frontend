@@ -110,12 +110,12 @@ export function TransferForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="rounded-lg bg-slate-50 px-4 py-3 text-sm">
-        <span className="text-slate-500">Source account: </span>
+      <div className="rounded-lg bg-ui-50 px-4 py-3 text-sm">
+        <span className="text-ui-500">Source account: </span>
         {account ? (
-          <span className="font-semibold text-slate-900">#{account.id}</span>
+          <span className="font-semibold text-ui-900">#{account.id}</span>
         ) : (
-          <span className="text-slate-400">none selected</span>
+          <span className="text-ui-400">none selected</span>
         )}
       </div>
 
@@ -156,10 +156,10 @@ export function TransferForm() {
       />
 
       {/* Idempotency key visibility — useful for a correctness-focused project. */}
-      <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-3 py-2">
+      <div className="flex items-center justify-between rounded-lg border border-ui-200 bg-white px-3 py-2">
         <div className="min-w-0">
-          <p className="text-xs font-medium text-slate-500">Idempotency-Key</p>
-          <p className="truncate font-mono text-xs text-slate-700" title={idempotencyKey}>
+          <p className="text-xs font-medium text-ui-500">Idempotency-Key</p>
+          <p className="truncate font-mono text-xs text-ui-700" title={idempotencyKey}>
             {idempotencyKey}
           </p>
         </div>
@@ -199,7 +199,7 @@ export function TransferForm() {
       </div>
 
       {disabled && (
-        <p className="text-center text-xs text-slate-400">
+        <p className="text-center text-xs text-ui-400">
           Select an account first.
         </p>
       )}
@@ -207,10 +207,10 @@ export function TransferForm() {
       {result && (
         <div className="rounded-lg border border-brand-200 bg-brand-50 px-4 py-3 text-sm text-brand-900">
           <p className="font-semibold">Transfer complete</p>
-          <p className="mt-1 font-mono text-xs">
-            ID #{String(result.transferId ?? result.id ?? "—")} ·{" "}
+          <p className="mt-1 text-xs">
+            ID #{String(result.transferId ?? result.id ?? "—")};{" "}
             {formatMoneyDisplay(result.amount)}
-            {result.status ? ` · ${result.status}` : ""}
+            {result.status ? `, ${result.status}` : ""}
           </p>
         </div>
       )}

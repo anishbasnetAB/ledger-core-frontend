@@ -83,14 +83,14 @@ export function TransferLookup() {
       </form>
 
       {transfer && (
-        <dl className="divide-y divide-slate-100 rounded-xl border border-slate-200 bg-white">
+        <dl className="divide-y divide-ui-100 rounded-xl border border-ui-200 bg-white">
           {KNOWN_FIELDS.filter((f) => transfer[f.key] !== undefined).map((f) => (
             <div
               key={String(f.key)}
               className="flex items-center justify-between gap-4 px-4 py-2.5"
             >
-              <dt className="text-xs font-medium text-slate-500">{f.label}</dt>
-              <dd className="font-mono text-sm text-slate-900">
+              <dt className="text-xs font-medium text-ui-500">{f.label}</dt>
+              <dd className="font-mono text-sm text-ui-900">
                 {f.key === "amount"
                   ? formatMoneyDisplay(transfer.amount)
                   : String(transfer[f.key])}

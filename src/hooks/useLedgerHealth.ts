@@ -27,8 +27,13 @@ export function useLedgerHealth(): UseLedgerHealth {
   const [status, setStatus] = useState<HealthStatus>("checking");
   const [lastCheckedAt, setLastCheckedAt] = useState<string | null>(null);
   const wakingTimer = useRef<number | null>(null);
+  const requestId = useRef(0);
+  const activeRequest = useRef<AbortController | null>(null);
 
   const check = useCallback(async () => {
+    const currentRequestId = ++requestId.current;
+    activeRequest.current?.abort();
+    if (wakingTimer.current) window.clearTimeout(wakingTimer.current);
     setStatus("checking");
 
     // If it's slow, optimistically show "waking up" rather than a dead state.
@@ -37,6 +42,7 @@ export function useLedgerHealth(): UseLedgerHealth {
     }, WAKING_THRESHOLD_MS);
 
     const controller = new AbortController();
+    activeRequest.current = controller;
     const timeout = window.setTimeout(
       () => controller.abort(),
       REQUEST_TIMEOUT_MS,
@@ -44,20 +50,28 @@ export function useLedgerHealth(): UseLedgerHealth {
 
     try {
       await ledgerApi.health(controller.signal);
+      if (currentRequestId !== requestId.current) return;
       setStatus("online");
       setLastCheckedAt(new Date().toISOString());
     } catch {
+      if (currentRequestId !== requestId.current) return;
       setStatus("offline");
     } finally {
-      if (wakingTimer.current) window.clearTimeout(wakingTimer.current);
-      window.clearTimeout(timeout);
+      if (currentRequestId === requestId.current) {
+        if (wakingTimer.current) window.clearTimeout(wakingTimer.current);
+        window.clearTimeout(timeout);
+        activeRequest.current = null;
+      }
     }
   }, []);
 
   useEffect(() => {
     check();
     return () => {
+      requestId.current += 1;
       if (wakingTimer.current) window.clearTimeout(wakingTimer.current);
+      activeRequest.current?.abort();
+      activeRequest.current = null;
     };
   }, [check]);
 

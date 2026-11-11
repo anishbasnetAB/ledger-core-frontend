@@ -61,38 +61,33 @@ export function AuthScreen({ notice }: { notice?: string | null }) {
     error && !emailError && !passwordError ? toFriendlyMessage(error) : null;
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12">
-      <div className="w-full max-w-sm">
-        <div className="mb-4 flex items-center justify-center gap-2 text-center text-xs font-medium text-slate-500">
-          <StatusBadge status={status} />
-        </div>
-
-        <div className="mb-8 flex flex-col items-center gap-3 text-center">
-          <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-700 text-white shadow-sm">
-            <svg
-              className="h-6 w-6"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.8}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
+    <div className="auth-layout min-h-screen px-4 py-6 sm:px-8 sm:py-10">
+      <div className="auth-stage">
+        <section className="auth-story" aria-label="About Ledger-Core">
+          <span className="auth-story-mark" aria-hidden="true">
+            <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 21h18M4 10h16M5 10l7-5 7 5M6 10v8M18 10v8M10 10v8M14 10v8" />
             </svg>
           </span>
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-slate-900">
-              Ledger-Core
-            </h1>
-            <p className="text-sm text-slate-500">Money-movement console</p>
+            <p className="auth-story-name">Ledger-Core</p>
+            <h1>Money-movement console</h1>
+            <p className="auth-story-copy">Transaction safety, data integrity, and reliable financial operations.</p>
           </div>
-        </div>
+          <p className="auth-story-foot">Built with Java, Spring Boot, and PostgreSQL.</p>
+        </section>
+        <div className="auth-content w-full max-w-sm">
+          <div className="auth-form-heading">
+            <div>
+              <h2>{mode === "login" ? "Welcome back" : "Create your access"}</h2>
+              <p>{mode === "login" ? "Sign in to continue to your accounts." : "Register to open and manage accounts."}</p>
+            </div>
+            <StatusBadge status={status} />
+          </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-card">
+        <div className="auth-panel p-6 sm:p-8">
           <div
-            className="mb-5 grid grid-cols-2 gap-1 rounded-lg bg-slate-100 p-1"
+            className="mb-5 grid grid-cols-2 gap-1 rounded-lg bg-ui-100 p-1"
             role="tablist"
           >
             {(["login", "register"] as Mode[]).map((m) => (
@@ -105,7 +100,7 @@ export function AuthScreen({ notice }: { notice?: string | null }) {
                 className={`rounded-md py-1.5 text-sm font-semibold transition ${
                   mode === m
                     ? "bg-white text-brand-700 shadow-sm"
-                    : "text-slate-500 hover:text-slate-700"
+                    : "text-ui-500 hover:text-ui-700"
                 }`}
               >
                 {m === "login" ? "Sign in" : "Register"}
@@ -170,7 +165,7 @@ export function AuthScreen({ notice }: { notice?: string | null }) {
           </form>
         </div>
 
-        <p className="mt-4 text-center text-xs text-slate-400">
+        <p className="mt-4 text-center text-xs text-ui-400">
           {mode === "login" ? "New here? " : "Already registered? "}
           <button
             type="button"
@@ -180,6 +175,7 @@ export function AuthScreen({ notice }: { notice?: string | null }) {
             {mode === "login" ? "Create an account" : "Sign in instead"}
           </button>
         </p>
+        </div>
       </div>
     </div>
   );

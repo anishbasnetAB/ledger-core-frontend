@@ -96,7 +96,7 @@ export function AccountCreate() {
 
       {createdId !== null && (
         <p className="rounded-lg bg-brand-50 px-3 py-2 text-sm font-medium text-brand-800">
-          Created account ID <span className="font-mono">#{createdId}</span> — now
+          Created account ID <span className="font-mono">#{createdId}</span> and is now
           selected as your current account.
         </p>
       )}

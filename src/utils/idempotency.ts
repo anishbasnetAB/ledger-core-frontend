@@ -1,5 +1,5 @@
 /**
- * Idempotency-key helpers for transfers.
+ * Idempotency-key helpers for money-moving requests.
  *
  * A transfer must carry an `Idempotency-Key` header. The same key should be
  * reused while retrying an uncertain/failed transfer, and a fresh key should

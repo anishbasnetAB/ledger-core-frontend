@@ -4,6 +4,18 @@ export default {
   theme: {
     extend: {
       colors: {
+        ui: {
+          50: "var(--surface-soft)",
+          100: "var(--surface-soft)",
+          200: "var(--line)",
+          300: "var(--line)",
+          400: "var(--ink-soft)",
+          500: "var(--ink-soft)",
+          600: "var(--ink-soft)",
+          700: "var(--ink)",
+          800: "var(--ink)",
+          900: "var(--ink)",
+        },
         // Brand green ramp, built from the project palette (004B23 -> CCFF33).
         // 50/100/200 are computed tints toward white for light backgrounds —
         // the source palette has no pastel end of its own.

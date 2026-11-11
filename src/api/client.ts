@@ -9,6 +9,7 @@ import { loadSession, clearSession } from "./session";
  * Trailing slashes are trimmed so we can safely join paths.
  */
 const FALLBACK_BASE_URL = "https://ledger-core.onrender.com";
+const DEFAULT_REQUEST_TIMEOUT_MS = 70000;
 
 export const API_BASE_URL = (
   import.meta.env.VITE_API_BASE_URL || FALLBACK_BASE_URL
@@ -23,6 +24,8 @@ export interface RequestOptions {
   body?: unknown;
   /** AbortSignal for cancellation / timeouts. */
   signal?: AbortSignal;
+  /** Maximum request duration. Defaults to the cold-start-friendly timeout. */
+  timeoutMs?: number;
 }
 
 type Method = "GET" | "POST";
@@ -65,12 +68,22 @@ async function request<T>(
   }
 
   let response: Response;
+  const controller = new AbortController();
+  const timeout = window.setTimeout(
+    () => controller.abort(),
+    options.timeoutMs ?? DEFAULT_REQUEST_TIMEOUT_MS,
+  );
+  const abortFromCaller = () => controller.abort();
+  if (options.signal) {
+    if (options.signal.aborted) controller.abort();
+    else options.signal.addEventListener("abort", abortFromCaller, { once: true });
+  }
   try {
     response = await fetch(url, {
       method,
       headers,
       body: bodyInit,
-      signal: options.signal,
+      signal: controller.signal,
     });
   } catch (err) {
     // Network error, DNS failure, CORS, or an aborted request.
@@ -79,6 +92,9 @@ async function request<T>(
       throw new ApiError("Request was cancelled.", 0);
     }
     throw new ApiError("Network request failed.", 0);
+  } finally {
+    window.clearTimeout(timeout);
+    options.signal?.removeEventListener("abort", abortFromCaller);
   }
 
   const data = await parseJsonSafe(response);
@@ -96,10 +112,13 @@ async function request<T>(
       clearSession();
       window.dispatchEvent(new Event("ledger-core:unauthorized"));
     }
+    const fieldErrors = Array.isArray(errorBody.fieldErrors)
+      ? errorBody.fieldErrors
+      : [];
     throw new ApiError(
       message,
       response.status,
-      errorBody.fieldErrors ?? [],
+      fieldErrors,
       errorBody,
     );
   }

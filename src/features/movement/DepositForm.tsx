@@ -6,7 +6,7 @@ export function DepositForm() {
   return (
     <MovementForm
       kind="deposit"
-      action={(id, amount) => ledgerApi.deposit(id, amount)}
+      action={(id, amount, key) => ledgerApi.deposit(id, amount, key)}
       submitLabel="Deposit"
       helperText="Examples: 100, 100.5, 100.50. Credited to your account."
     />

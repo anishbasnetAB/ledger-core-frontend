@@ -6,7 +6,7 @@ export function WithdrawForm() {
   return (
     <MovementForm
       kind="withdraw"
-      action={(id, amount) => ledgerApi.withdraw(id, amount)}
+      action={(id, amount, key) => ledgerApi.withdraw(id, amount, key)}
       submitLabel="Withdraw"
       helperText=""
     />

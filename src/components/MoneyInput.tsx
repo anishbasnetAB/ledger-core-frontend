@@ -50,7 +50,7 @@ export function MoneyInput({
       </label>
       <div className="relative">
         <span
-          className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-slate-400"
+          className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm text-ui-400"
           aria-hidden="true"
         >
           $

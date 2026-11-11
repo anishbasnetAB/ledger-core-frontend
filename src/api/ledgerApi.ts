@@ -1,5 +1,4 @@
 import { apiClient } from "./client";
-import { generateIdempotencyKey } from "../utils/idempotency";
 import type {
   Account,
   AuthRequest,
@@ -45,20 +44,28 @@ export const ledgerApi = {
   },
 
   /** POST /api/accounts/{id}/deposit — credit an account. */
-  deposit(accountId: number, amount: string): Promise<unknown> {
+  deposit(
+    accountId: number,
+    amount: string,
+    idempotencyKey: string,
+  ): Promise<unknown> {
     return apiClient.post<unknown>(
       `/accounts/${accountId}/deposit`,
       { amount },
-      { headers: { "Idempotency-Key": generateIdempotencyKey() } },
+      { headers: { "Idempotency-Key": idempotencyKey } },
     );
   },
 
   /** POST /api/accounts/{id}/withdraw — debit an account. */
-  withdraw(accountId: number, amount: string): Promise<unknown> {
+  withdraw(
+    accountId: number,
+    amount: string,
+    idempotencyKey: string,
+  ): Promise<unknown> {
     return apiClient.post<unknown>(
       `/accounts/${accountId}/withdraw`,
       { amount },
-      { headers: { "Idempotency-Key": generateIdempotencyKey() } },
+      { headers: { "Idempotency-Key": idempotencyKey } },
     );
   },
 

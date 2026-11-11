@@ -3,6 +3,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -33,32 +34,51 @@ export function BalanceProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [lastRefreshedAt, setLastRefreshedAt] = useState<string | null>(null);
+  const requestId = useRef(0);
+  const activeRequest = useRef<AbortController | null>(null);
 
   const accountId = account?.id ?? null;
 
   const refresh = useCallback(async () => {
+    const currentRequestId = ++requestId.current;
+    activeRequest.current?.abort();
     if (accountId == null) {
+      activeRequest.current = null;
       setBalance(null);
       setError(null);
+      setLoading(false);
       return;
     }
+    const controller = new AbortController();
+    activeRequest.current = controller;
     setLoading(true);
     setError(null);
     try {
-      const data = await ledgerApi.getBalance(accountId);
+      const data = await ledgerApi.getBalance(accountId, controller.signal);
+      if (currentRequestId !== requestId.current) return;
       setBalance(data);
       setLastRefreshedAt(new Date().toISOString());
     } catch (err) {
+      if (currentRequestId !== requestId.current) return;
+      if (err instanceof DOMException && err.name === "AbortError") return;
       setBalance(null);
       setError(toFriendlyMessage(err));
     } finally {
-      setLoading(false);
+      if (currentRequestId === requestId.current) {
+        activeRequest.current = null;
+        setLoading(false);
+      }
     }
   }, [accountId]);
 
   // Auto-load whenever the selected account changes.
   useEffect(() => {
     void refresh();
+    return () => {
+      requestId.current += 1;
+      activeRequest.current?.abort();
+      activeRequest.current = null;
+    };
   }, [refresh]);
 
   return (

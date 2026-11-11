@@ -14,11 +14,11 @@ export function AccountDashboard() {
 
   if (!account) {
     return (
-      <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center">
-        <p className="text-sm font-medium text-slate-600">
+      <div className="rounded-xl border border-dashed border-ui-300 bg-ui-50 px-6 py-10 text-center">
+        <p className="text-sm font-medium text-ui-600">
           Select an account to view balance.
         </p>
-        <p className="mt-1 text-xs text-slate-400">
+        <p className="mt-1 text-xs text-ui-400">
           Create an account or enter an existing account ID to begin.
         </p>
       </div>
@@ -27,9 +27,9 @@ export function AccountDashboard() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-2xl bg-gradient-to-br from-brand-800 to-brand-950 p-6 text-white shadow-card">
+      <div className="balance-surface p-6 text-white sm:p-8">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-medium uppercase tracking-wider text-brand-200">
+          <span className="text-sm font-medium text-brand-200">
             Available balance
           </span>
           <span className="rounded-full bg-white/10 px-2.5 py-1 text-xs font-medium">
@@ -50,7 +50,7 @@ export function AccountDashboard() {
               </span>
             </div>
           ) : (
-            <span className="text-2xl font-semibold text-brand-200">—</span>
+            <span className="text-2xl font-semibold text-brand-200">Not available</span>
           )}
         </div>
 
@@ -85,16 +85,16 @@ export function AccountDashboard() {
 
       {error && <ErrorMessage message={error} />}
 
-      <div className="grid grid-cols-2 gap-3 text-sm">
-        <div className="rounded-lg border border-slate-200 bg-white px-4 py-3">
-          <dt className="text-xs text-slate-500">Account ID</dt>
-          <dd className="mt-0.5 font-mono font-semibold text-slate-900">
+      <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
+        <div className="rounded-lg border border-ui-200 bg-white px-4 py-3">
+          <dt className="text-xs text-ui-500">Account ID</dt>
+          <dd className="mt-0.5 font-mono font-semibold text-ui-900">
             #{account.id}
           </dd>
         </div>
-        <div className="rounded-lg border border-slate-200 bg-white px-4 py-3">
-          <dt className="text-xs text-slate-500">Currency</dt>
-          <dd className="mt-0.5 font-semibold text-slate-900">
+        <div className="rounded-lg border border-ui-200 bg-white px-4 py-3">
+          <dt className="text-xs text-ui-500">Currency</dt>
+          <dd className="mt-0.5 font-semibold text-ui-900">
             {balance?.currency ?? account.currency ?? "—"}
           </dd>
         </div>
